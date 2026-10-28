@@ -1,0 +1,20 @@
+# local data
+*.db
+*.sqlite
+*.sqlite3
+data/
+.env
+
+# python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+
+# node
+node_modules/
+
+# audio temp
+*.webm
+*.wav
+tmp/

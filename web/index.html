@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="ur">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Voice Khata</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <h1>Voice Khata</h1>
+    <p class="hint">Press the button, speak in Urdu, press again to stop.<br>
+      e.g. “Ahmed ne 500 ka udhaar liya” or “Ahmed ka kitna baqi hai?”</p>
+
+    <button id="rec" type="button">🎙 Record</button>
+    <p id="status" role="status"></p>
+
+    <section id="result" hidden>
+      <p class="label">Heard</p>
+      <p id="transcript" dir="auto"></p>
+      <div id="answer"></div>
+      <div id="actions" hidden>
+        <button id="confirm" type="button">Confirm &amp; save</button>
+        <button id="discard" type="button" class="secondary">Discard</button>
+      </div>
+    </section>
+
+    <section>
+      <h2>Customers</h2>
+      <ul id="customers"></ul>
+    </section>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -3,33 +3,93 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#070b14">
   <title>Voice Khata</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;600&family=Space+Grotesk:wght@400;500;600;700&display=swap">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+  <div class="grid-bg" aria-hidden="true"></div>
+
   <main>
-    <h1>Voice Khata</h1>
-    <p class="hint">Press the button, speak in Urdu, press again to stop.<br>
-      e.g. “Ahmed ne 500 ka udhaar liya” or “Ahmed ka kitna baqi hai?”</p>
+    <header class="top">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M4 10v4M8 7v10M12 4v16M16 7v10M20 10v4"/></svg>
+        </div>
+        <div>
+          <h1>Voice Khata</h1>
+          <p class="urdu-sub" lang="ur" dir="rtl">آواز والا کھاتہ</p>
+        </div>
+      </div>
+      <span class="chip-live" title="Audio and ledger stay on this computer"><b></b>On-device · Gemma</span>
+    </header>
 
-    <button id="rec" type="button">🎙 Record</button>
-    <p id="status" role="status"></p>
+    <section class="stage">
+      <div class="orb-wrap">
+        <div class="halo" aria-hidden="true"></div>
+        <button id="rec" type="button" aria-label="Record">
+          <svg class="icon-mic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3Zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-3.08A7 7 0 0 0 19 11h-2Z"/></svg>
+          <svg class="icon-stop" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="3"/></svg>
+          <span class="loader" aria-hidden="true"></span>
+        </button>
+      </div>
+      <canvas id="wave" width="640" height="96" aria-hidden="true"></canvas>
+      <p id="timer" aria-hidden="true">00:00</p>
+      <p id="status" role="status">Tap the orb and speak</p>
+      <div class="examples">
+        <span lang="ur" dir="rtl">احمد نے 500 کا ادھار لیا</span>
+        <span lang="ur" dir="rtl">احمد کا کتنا باقی ہے؟</span>
+      </div>
+    </section>
 
-    <section id="result" hidden>
+    <section id="error" class="card error-card" role="alert" hidden>
+      <div class="err-head">
+        <div class="err-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M12 9v4m0 4h.01M10.3 3.9 2.4 17.5A2 2 0 0 0 4.1 20.5h15.8a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>
+        </div>
+        <div>
+          <h3 id="err-title"></h3>
+          <p id="err-hint"></p>
+        </div>
+      </div>
+      <div id="err-heard" hidden>
+        <p class="label">Heard</p>
+        <p id="err-transcript" dir="auto"></p>
+      </div>
+      <details id="err-details">
+        <summary>Technical details</summary>
+        <code id="err-tech"></code>
+      </details>
+      <div class="err-actions">
+        <button id="err-retry" type="button" class="btn primary">Try again</button>
+        <button id="err-close" type="button" class="btn ghost">Dismiss</button>
+      </div>
+    </section>
+
+    <section id="result" class="card" hidden>
       <p class="label">Heard</p>
       <p id="transcript" dir="auto"></p>
       <div id="answer"></div>
       <div id="actions" hidden>
-        <button id="confirm" type="button">Confirm &amp; save</button>
-        <button id="discard" type="button" class="secondary">Discard</button>
+        <button id="confirm" type="button" class="btn primary">Confirm &amp; save</button>
+        <button id="discard" type="button" class="btn ghost">Discard</button>
       </div>
     </section>
 
-    <section>
-      <h2>Customers</h2>
+    <section class="card">
+      <div class="card-head">
+        <h2>Customers</h2>
+        <span id="cust-count" class="count"></span>
+      </div>
       <ul id="customers"></ul>
     </section>
   </main>
+
+  <div id="toast" role="status" hidden></div>
   <script src="app.js"></script>
 </body>
 </html>

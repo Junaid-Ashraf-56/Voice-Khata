@@ -54,12 +54,16 @@ def create_app(settings: Optional[Settings] = None,
         try:
             wav = to_wav(data)
             transcript = transcriber.transcribe(wav)
-            names = store.customer_names()
-            result = extract_mod.extract(transcript, names, chat=chat)
         except audio.AudioError as e:
             raise HTTPException(400, str(e))
-        except (transcribe_mod.TranscribeError, extract_mod.ExtractionError) as e:
+        except transcribe_mod.TranscribeError as e:
             raise HTTPException(422, str(e))
+        names = store.customer_names()
+        try:
+            result = extract_mod.extract(transcript, names, chat=chat)
+        except extract_mod.ExtractionError as e:
+            # Include what was heard so the user can tell a mishearing from a misparse.
+            raise HTTPException(422, {"message": str(e), "transcript": transcript})
 
         name, is_new, similar = resolve_name(result.customer_name, names)
 
@@ -89,6 +93,14 @@ def create_app(settings: Optional[Settings] = None,
         entry_id = store.add_entry(p.customer_name, p.amount, p.kind, p.note)
         return ConfirmResponse(entry_id=entry_id, customer_name=p.customer_name,
                                balance=store.balance(p.customer_name))
+
+    @app.middleware("http")
+    async def revalidate_static(request, call_next):
+        # Make browsers re-check web/ files so UI updates show up without a hard refresh.
+        response = await call_next(request)
+        if not request.url.path.startswith("/api/"):
+            response.headers["Cache-Control"] = "no-cache"
+        return response
 
     if WEB_DIR.is_dir():
         app.mount("/", StaticFiles(directory=WEB_DIR, html=True), name="web")

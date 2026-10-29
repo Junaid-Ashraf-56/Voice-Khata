@@ -80,7 +80,10 @@ def test_get_balance_for_unknown_customer_does_not_create_one():
 def test_invalid_model_output_returns_clear_error():
     c = make_client(tool("add_entry", {"customer_name": "A", "amount": -1, "kind": "udhaar"}))
     r = upload(c)
-    assert r.status_code == 422 and "say it again" in r.json()["detail"]
+    assert r.status_code == 422
+    detail = r.json()["detail"]
+    assert "say it again" in detail["message"]
+    assert detail["transcript"] == "transcript"  # what was heard is reported back
 
 
 def test_transcribe_error_is_reported():

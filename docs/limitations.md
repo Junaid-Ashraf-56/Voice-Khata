@@ -4,11 +4,11 @@ Honest list of what is not verified or not handled.
 
 - **Urdu accuracy is unmeasured.** No transcription accuracy, name-matching accuracy or latency numbers
   exist yet. Gemma's Urdu transcription may be weak; `TRANSCRIBE_BACKEND=whisper` is the fallback.
-- **Gemma audio through Ollama is unverified.** The Gemma transcriber sends audio as `input_audio` to
-  Ollama's OpenAI-compatible `/v1/chat/completions`. Whether your Ollama version and the Gemma 4 E4B
-  build accept that has to be confirmed on real hardware. The model tag (`gemma4:e4b`) is the
-  configured default and must match `ollama list`.
-- **Model size.** Roughly 6 GB of disk and memory for the model (approximate; check `ollama list`).
+- **Gemma audio input depends on the Ollama version.** The Gemma transcriber sends audio as `input_audio`
+  to Ollama's OpenAI-compatible `/v1/chat/completions`. This works with Ollama 0.40.13 and `gemma4:e4b`
+  on the test machine; other versions are untested. The model tag must match `ollama list`.
+- **Model size.** `gemma4:e4b` (Q4_K_M) is 6.58 GB on disk and needs comparable memory to run.
+- **Fonts load from Google Fonts.** Offline, Urdu text falls back to a system font.
 - **Tested on one machine.** Linux only so far. macOS and Windows are untested.
 - **Roman Urdu / code-mixed speech** may transcribe or extract poorly; the prompt asks for Urdu script.
 - **Name matching is simple.** Exact (case/space-insensitive) matches are reused; spelling variants
